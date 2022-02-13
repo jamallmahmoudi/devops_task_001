@@ -1,0 +1,41 @@
+# base image Linux Ubuntu
+FROM  ubuntu:20.04
+ENV SOFT    AppManager
+#ENV EDITTION      latst
+ENV SOFT_OPT      /home/bahram/
+
+# download option
+
+RUN apt-get udock pdate -y
+RUN apt-get -y upgrade -y 
+RUN apt-get install -y curl
+RUN apt-get install systemd -y
+WORKDIR /home/bahram/DOCKER
+COPY  AppManager  /etc/init.d/
+RUN   chmod 755 /etc/init.d/AppManager
+
+RUN   update-rc.d AppManager defaults
+
+COPY  AppManager.service /etc/systemd/system/
+RUN   chmod 644 /etc/systemd/system/AppManager.service
+RUN   /etc/init.d/AppManager start
+RUN   systemctl enable /etc/systemd/system/AppManager.service
+RUN   systemctl start AppManager.service
+
+#WORKDIR /home/bahram
+
+#CMD ["sh", "AppManager"]
+
+# Set the default working directory as the installation directory.
+#WORKDIR ${SOFT_HOME}
+
+# VOLUME point
+VOLUME ["${SOFT_OPT}"]
+
+# Expose default HTTP connector port.
+EXPOSE 9090
+
+# helthcheck
+#HEALTHCHECK CMD curl --fail http://localhost:9090/ || exit 1
+
+CMD ["bash"]

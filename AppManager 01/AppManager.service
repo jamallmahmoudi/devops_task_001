@@ -1,0 +1,12 @@
+[Unit]
+Description=ManageEngine Applications Manager
+Documentation=https://www.manageengine.com/products/applications_manager/
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/AppManager start
+ExecStop=/etc/init.d/AppManager stop
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
